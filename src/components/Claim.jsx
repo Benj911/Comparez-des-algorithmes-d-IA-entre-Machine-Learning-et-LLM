@@ -10,9 +10,7 @@ const mistral = new Mistral({
 });
 
 export default function ClaimComponent({ claim, isSelected, onClick, onTagClick }) {
-    // 1. Nouveaux états pour gérer le LLM
     const [isLoading, setIsLoading] = useState(false);
-    // On utilise le tag du LLM s'il existe, sinon le tag d'origine de la prop 'claim'
     const [activeTag, setActiveTag] = useState(claim.tag); 
 
     const handleTagClick = (e) => {
@@ -22,27 +20,52 @@ export default function ClaimComponent({ claim, isSelected, onClick, onTagClick 
         }
     };
 
-    // 2. Fonction d'appel à Mistral
     const handleAutoTagging = async (e) => {
-        e.stopPropagation(); // Empêche de déclencher le onClick du container parent
+        e.stopPropagation(); 
         setIsLoading(true);
 
         try {
-            // 1. Tes catégories officielles issues de la Mission 1
-            const categoriesStr = `- Debt collection
-- Consumer Loan
-- Credit card or prepaid card
-- Mortgage
-- Vehicle loan or lease
-- Student loan
-- Payday loan, title loan, or personal loan
-- Checking or savings account
-- Bank account or service
-- Money transfer, virtual currency, or money service
-- Money transfers
-- Other financial services`;
+            // ==========================================
+            // 🤖 APPROCHE 1 : MACHINE LEARNING (API LOCALE)
+            // ==========================================
+            const response = await fetch('http://127.0.0.1:8000/tags', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_claim: claim.content }),
+            });
 
-            // 2. Ton prompt de la Mission 1, adapté pour UN SEUL ticket
+            if (!response.ok) throw new Error("Erreur serveur API Python");
+
+            const data = await response.json();
+            setActiveTag(data.category);
+
+
+            // ==========================================
+            // 🧠 APPROCHE 2 : LLM MISTRAL (Commentée pour la démo)
+            // Pour utiliser Mistral, commente l'Approche 1 et décommente ce bloc :
+            // ==========================================
+            /*
+
+            const categoriesStr = `- Debt collection
+- Credit reporting, credit repair services, or other personal consumer reports
+- Mortgage
+- Credit reporting
+- Student loan
+- Credit card or prepaid card
+- Credit card
+- Bank account or service
+- Checking or savings account
+- Consumer Loan
+- Vehicle loan or lease
+- Money transfer, virtual currency, or money service
+- Payday loan, title loan, or personal loan
+- Payday loan
+- Money transfers
+- Prepaid card
+- Other financial service
+- Virtual currency`;
+
+
             const promptSysteme = `Tu es un agent de support client expert chez ZenAssist.
 Ta mission est de classifier la réclamation de l'utilisateur dans l'UNE des catégories officielles ci-dessous.
 
@@ -59,24 +82,24 @@ Exemple de format attendu :
 }`;
 
             const response = await mistral.chat.complete({
-                model: 'open-mistral-nemo', // On garde Nemo pour la rapidité sur l'UI
+                model: 'open-mistral-nemo',
                 messages: [
                     { role: 'system', content: promptSysteme },
                     { role: 'user', content: claim.content }
                 ],
-                temperature: 0, // Pour plus de précision
+                temperature: 0,
                 responseFormat: { type: 'json_object' }
             });
 
             const contenu = response.choices[0].message.content;
             const jsonResult = JSON.parse(contenu);
             
-            // Mise à jour de l'étiquette
             setActiveTag(jsonResult.category);
-            
+            */
+
         } catch (error) {
-            console.error("Erreur lors de la classification LLM :", error);
-            alert("Erreur API : Vérifie ta clé ou ta connexion.");
+            console.error("Erreur lors de la classification :", error);
+            alert("Erreur de classification : Vérifie que ton serveur Python tourne bien sur le port 8000 !");
         } finally {
             setIsLoading(false);
         }
@@ -98,19 +121,18 @@ Exemple de format attendu :
                     {claim.content}
                 </p>
                 
-                {/* 3. Affichage conditionnel : Soit l'étiquette, soit le bouton LLM */}
                 {activeTag ? (
                     <button
                         className={styles.tag}
                         onClick={handleTagClick}
-                        aria-label={`Navigate to ${activeTag} inbox`}
+                        aria-label={`Maps to ${activeTag} inbox`}
                         title={`Go to ${activeTag} inbox`}
                     >
                         {activeTag}
                     </button>
                 ) : (
                     <button 
-                        className={styles.tag} // On réutilise le style tag, ou tu peux créer un styles.llmButton
+                        className={styles.tag}
                         onClick={handleAutoTagging}
                         disabled={isLoading}
                         style={{ cursor: isLoading ? 'wait' : 'pointer', backgroundColor: isLoading ? '#ccc' : '' }}
