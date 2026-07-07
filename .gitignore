@@ -1,0 +1,36 @@
+# =========================
+# 1. FRONT-END (Next.js & Node)
+# =========================
+# Dépendances très lourdes
+node_modules/
+
+# Dossier de build Next.js
+.next/
+out/
+
+# Variables d'environnement
+.env.local
+
+# =========================
+# 2. MACHINE LEARNING (Python)
+# =========================
+# Fichiers caches Python
+__pycache__/
+*.pyc
+
+# Fichiers de modèles et métriques générés localement 
+*.pkl
+model.pkl
+metrics.json
+
+# Dossiers virtuels Python (si tu en utilises un)
+env/
+venv/
+env_zenassist/
+
+# =========================
+# 3. SYSTÈME & ÉDITEUR
+# =========================
+.DS_Store
+Thumbs.db
+.vscode/
