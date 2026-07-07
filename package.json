@@ -14,14 +14,11 @@
   },
   "dependencies": {
     "@mistralai/mistralai": "^2.4.1",
-    "fastapi": "^0.0.8",
     "next": "^15.5.20",
     "pg": "^8.16.3",
-    "pydantic": "^0.0.1-security",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "sql-template-strings": "^2.2.2",
-    "uvicorn": "^0.0.1-security"
+    "sql-template-strings": "^2.2.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
