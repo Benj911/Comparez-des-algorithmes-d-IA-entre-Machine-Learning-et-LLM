@@ -11,6 +11,9 @@ print("1. Chargement de l'échantillon de données...")
 # On utilise le fichier léger qu'on vient de créer
 df = pd.read_csv('dataset_sample.csv')
 
+# On supprime toutes les lignes où le texte ou le tag est vide
+df = df.dropna(subset=['Consumer Claim', 'Tag'])
+
 # ATTENTION : Remplace 'text' et 'category' par les vrais noms de tes colonnes !
 X = df['Consumer Claim'] 
 y = df['Tag']
