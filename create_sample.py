@@ -1,7 +1,6 @@
 import pandas as pd
 
 print("Chargement du dataset complet...")
-# Remplace par le VRAI chemin vers ton fichier de 600Mo
 df = pd.read_csv("../../../Mission 1 - Explorez deux algorithmes de classification/dataset.csv") 
 
 print("Création de l'échantillon...")

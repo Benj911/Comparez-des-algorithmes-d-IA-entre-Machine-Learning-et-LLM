@@ -10,5 +10,11 @@ export const ALLOWED_TAGS = [
   'Bank account or service',
   'Money transfer, virtual currency, or money service',
   'Money transfers',
-  'Other financial services'
+  'Other financial services',
+  // 'Virtual currency',
+  // 'Prepaid card',
+  // 'Payday loan',
+  // 'Credit card',
+  // 'Credit reporting',
+  // 'Credit reporting, credit repair services, or other personal consumer reports'
 ];

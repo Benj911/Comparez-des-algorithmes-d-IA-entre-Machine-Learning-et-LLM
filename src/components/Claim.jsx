@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Mistral } from '@mistralai/mistralai';
 import styles from './Claim.module.css';
 
-// Initialisation du client Mistral (la clé doit être dans .env.local)
+// Initialisation du client Mistral
 const mistral = new Mistral({
     apiKey: process.env.NEXT_PUBLIC_MISTRAL_API_KEY || ''
 });
@@ -26,8 +26,9 @@ export default function ClaimComponent({ claim, isSelected, onClick, onTagClick 
 
         try {
             // ==========================================
-            // 🤖 APPROCHE 1 : MACHINE LEARNING (API LOCALE)
+            // APPROCHE 1 : MACHINE LEARNING (API LOCALE)
             // ==========================================
+            
             const response = await fetch('http://127.0.0.1:8000/tags', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -41,8 +42,7 @@ export default function ClaimComponent({ claim, isSelected, onClick, onTagClick 
 
 
             // ==========================================
-            // 🧠 APPROCHE 2 : LLM MISTRAL (Commentée pour la démo)
-            // Pour utiliser Mistral, commente l'Approche 1 et décommente ce bloc :
+            // APPROCHE 2 : LLM MISTRAL
             // ==========================================
             /*
 
@@ -137,7 +137,7 @@ Exemple de format attendu :
                         disabled={isLoading}
                         style={{ cursor: isLoading ? 'wait' : 'pointer', backgroundColor: isLoading ? '#ccc' : '' }}
                     >
-                        {isLoading ? '⏳ Chargement...' : '✨ Auto-étiqueter'}
+                        {isLoading ? ' Chargement...' : ' Auto-étiqueter'}
                     </button>
                 )}
             </div>

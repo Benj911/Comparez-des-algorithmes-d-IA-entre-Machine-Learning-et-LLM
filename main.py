@@ -5,7 +5,7 @@ import pickle
 
 app = FastAPI(title="API ML ZenAssist")
 
-# Autoriser ton site web (React/Next.js) à parler avec cette API
+# Autoriser le site à parler avec cette API
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"], 
@@ -22,7 +22,7 @@ try:
 except FileNotFoundError:
     print("❌ Erreur : model.pkl introuvable. As-tu bien exécuté export_model.py ?")
 
-# Format de la requête attendue (le "body")
+# Format de la requête attendue
 class ClaimRequest(BaseModel):
     user_claim: str
 
